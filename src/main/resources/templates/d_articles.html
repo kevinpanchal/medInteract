@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width, initial-scale=1" name="viewport">
+		<title> Medinteract</title>
+		
+		<link href="static/style.css" rel="stylesheet" type="text/css">
+		<link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+		      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" rel="stylesheet">
+		<script crossorigin="anonymous"
+		        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+		        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+		<script crossorigin="anonymous"
+		        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+		        src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+		<script crossorigin="anonymous"
+		        integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw=="
+		        referrerpolicy="no-referrer"
+		        src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+		<script crossorigin="anonymous"
+		        integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g=="
+		        referrerpolicy="no-referrer"
+		        src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+		<link href="https://kendo.cdn.telerik.com/2023.1.117/styles/kendo.default-ocean-blue.min.css" rel="stylesheet"/>
+		<script src="https://kendo.cdn.telerik.com/2023.1.117/js/kendo.all.min.js"></script>
+		<script src="static/script.js" type="text/javascript"></script>
+		<style>
+				#blogContainer .card {
+						-webkit-transition: all 100ms ease-in-out;
+						transition: all 100ms ease-in-out;
+				}
+				
+				#blogContainer .card:hover {
+						transform: scale(1.04);
+						-webkit-box-shadow: 0 10px 70px rgba(0,0,0,.05);
+						box-shadow: 0 10px 70px rgba(0,0,0,.05);
+				}
+		</style>
+</head>
+<body>
+<div id="navDiv"></div>
+<div id="contentDiv">
+		<div class="row">
+				<button class="d-none" id="modalBtn" data-bs-target="#exampleModal" data-bs-toggle="modal"></button>
+				<button class="btn ms-auto me-5 my-3 text-primary border-primary px-4"
+				        style="width: auto;" type="button" onclick="addArticle()">
+						Add article
+				</button>
+		</div>
+		<div class="row m-0 py-4" id="blogContainer">
+		</div>
+		<!-- Modal -->
+		<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" data-bs-focus="false" tabindex="-1">
+				<div class="modal-dialog modal-xl">
+						<div class="modal-content">
+								<div class="modal-header">
+										<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+										<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+								</div>
+								<div class="modal-body">
+										<form enctype="multipart/form-data" id="form" method="post">
+												<div class="form-group row my-3">
+														<label class="col-md-3 col-form-label text-md-left">Article Title</label>
+														<div class="col-md-9">
+																<input class="form-control" id="title" name="title" required type="text">
+														</div>
+												</div>
+												<div class="form-group row my-3">
+														<label class="col-md-3 col-form-label text-md-left">Cover Image</label>
+														<div class="col-9">
+																<input accept="image/*" name="cover_image" class="mb-3" id="coverImage" type="file">
+																<img id="image" src=""
+																     class="" alt="image previewer" style="max-width: 100%; max-height: 15rem"/>
+														</div>
+<!--														<div class="d-flex flex-row justify-content-center mb-4">-->
+<!--																<div class="btn btn-primary btn-rounded">-->
+<!--																		<label class="form-label text-white m-1" for="coverImage">Choose file</label>-->
+<!--																		<input type="file" class="form-control d-none" id="coverImage" name="cover_image"-->
+<!--																		       accept="image/png, image/jpeg"/>-->
+<!--																</div>-->
+<!--														</div>-->
+												</div>
+												<div class="form-group row my-3">
+														<label class="col-md-3 col-form-label text-md-left">Content</label>
+														<div class="col-md-9">
+																<div class="demo-section k-content wide">
+																			<textarea aria-label="editor" cols="30" id="editor" name="editor"
+																			          rows="10" style="width:100%;height:27vw">
+																			</textarea>
+																</div>
+														</div>
+												</div>
+												<div class="modal-footer">
+														<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+														<button class="btn btn-primary" id="submit_btn" name="submit" type="submit">
+																Save article
+														</button>
+												</div>
+										</form>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>
+</body>
+</html>
+
+<script>
+		window.id = null;
+		window.createdDate = null;
+		
+		let editor = $("#editor").kendoEditor({
+				tools: [
+						"bold",
+						"italic",
+						"underline",
+						"undo",
+						"redo",
+						"justifyLeft",
+						"justifyCenter",
+						"justifyRight",
+						"insertUnorderedList",
+						"createLink",
+						"unlink",
+						"insertImage",
+						"tableWizard",
+						"createTable",
+						"addRowAbove",
+						"addRowBelow",
+						"addColumnLeft",
+						"addColumnRight",
+						"deleteRow",
+						"deleteColumn",
+						"mergeCellsHorizontally",
+						"mergeCellsVertically",
+						"splitCellHorizontally",
+						"splitCellVertically",
+						"tableAlignLeft",
+						"tableAlignCenter",
+						"tableAlignRight",
+						"formatting",
+						{
+								name: "fontName",
+								items: [{
+										text: "Andale Mono",
+										value: "\"Andale Mono\""
+								}, // Font-family names composed of several words should be wrapped in \" \"
+										{
+												text: "Arial",
+												value: "Arial"
+										},
+										{
+												text: "Arial Black",
+												value: "\"Arial Black\""
+										},
+										{
+												text: "Book Antiqua",
+												value: "\"Book Antiqua\""
+										},
+										{
+												text: "Comic Sans MS",
+												value: "\"Comic Sans MS\""
+										},
+										{
+												text: "Courier New",
+												value: "\"Courier New\""
+										},
+										{
+												text: "Georgia",
+												value: "Georgia"
+										},
+										{
+												text: "Helvetica",
+												value: "Helvetica"
+										},
+										{
+												text: "Impact",
+												value: "Impact"
+										},
+										{
+												text: "Symbol",
+												value: "Symbol"
+										},
+										{
+												text: "Tahoma",
+												value: "Tahoma"
+										},
+										{
+												text: "Terminal",
+												value: "Terminal"
+										},
+										{
+												text: "Times New Roman",
+												value: "\"Times New Roman\""
+										},
+										{
+												text: "Trebuchet MS",
+												value: "\"Trebuchet MS\""
+										},
+										{
+												text: "Verdana",
+												value: "Verdana"
+										},
+								]
+						},
+						"fontSize",
+						"foreColor",
+						"backColor",
+				]
+		});
+		
+		const form = document.getElementById('form');
+		form.addEventListener('submit', submitForm);
+		
+		function submitForm(event) {
+				event.preventDefault();
+				$("#submit_btn").prop('disabled', true)
+				let data = {};
+				if(window.id != null) {
+						data["id"] = window.id;
+				}
+				data["doctorId"] = getCookie("id");
+				data["title"] = $("#title").val();
+				// data["content"] = editor.data("kendoEditor").value();
+				data["createdDate"] = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 * -1).toJSON().split('.')[0].replace('T', ' ');
+				const fileInput = document.querySelector('input[type="file"]');
+				let file = fileInput.files[0]; // get the first file from the input
+				const formData = new FormData();
+				formData.append('coverImage', file); // add the file to the form data
+				formData.append('objectData', JSON.stringify(data));
+				formData.append('content', editor.data("kendoEditor").value());
+				if(window.action == "add") {
+						url = "addArticle";
+				} else if(window.action == "edit") {
+						url = "updateArticle"
+				}
+				$.ajax({
+						url: globalURL + "article/" + url,
+						type: 'POST',
+						processData: false,
+						contentType: false,
+						data: formData
+				}).done(function (response) {
+						try {
+								if (response.isError) {
+										addToast(true, "Error", response.msg);
+										$("#submit_btn").prop('disabled', false);
+								} else {
+										// $("#exampleModal").modal('hide');
+										location.reload();
+								}
+						} catch (err) {
+								$("#submit_btn").prop('disabled', false);
+								addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+						}
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+						$("#submit_btn").prop('disabled', false);
+						alert(textStatus + " while saving blog");
+				});
+		}
+		
+		$(document).ready(function () {
+				if(getCookie("type") === "patient") {
+						window.location.href = './articles.html'
+				}
+				loadImagePreview();
+				const myModalEl = document.getElementById('modalBtn')
+				myModalEl.addEventListener('hidden.bs.modal', event => {
+						window.id = null;
+						window.createdDate = null;
+				})
+				domainURL = "article/fetchDoctorArticle/"+getCookie("id");
+				$.ajax({
+						url: globalURL + domainURL,
+						type: "GET",
+						dataType: "json"
+				})
+				.done(function (response) {
+						for (i = 0; i < response.data.length; i++) {
+								$("#blogContainer").append(`
+						<div class="col-12 col-sm-6 col-md-4 col-lg-3 py-3">
+								<div class="card p-4 h-100">
+										<img src="${globalURL}${response.data[i].coverImage}" class="card-img-top" alt="..." style="height:100%">
+												<div class="card-body d-flex flex-column">
+														<div class="mt-auto">
+																<h5 class="card-title">${response.data[i].title}</h5>
+														<div class="row">
+																<img class="rounded-circle mx-auto" src="${globalURL}${response.data[i].profilePicture}"
+																     onError="this.onerror=null;this.src='./static/images/doctor/default.jpg';"
+																     style="width: 3rem;">
+																		<div class="align-items-end d-flex col ps-0 fw-bold">
+																				${response.data[i].doctorName}
+																		</div>
+														</div>
+														<!-- <p class="pt-2">${new Date(new Date(response.data[i].createdDate).getTime() + new Date(response.data[i].createdDate).getTimezoneOffset()*60*1000*-1).toJSON()}</p> -->
+														<p class="pt-2">${new Date(response.data[i].createdDate).toLocaleString()}</p>
+														<!--								<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+														<div class="d-xxl-flex flex-row">
+																<a href="./article.html#${response.data[i].id}" class="btn btn-primary">Read More</a>
+																<div class="ms-auto">
+																		<button type="button" class="btn btn-link" id="edit_${response.data[i].id}" onclick="editArticle(this.id)">
+																				<i class="bi bi-pencil-square"></i>
+																		</button>
+																		<button type="button" class="btn btn-link" id="delete_${response.data[i].id}" onclick="deleteArticle(this.id)">
+																				<i class="bi bi-trash"></i>
+																		</button>
+																</div>
+														</div>
+														
+													</div>
+												</div>
+								</div>
+						</div>
+				`)
+						}
+						try {
+								if (response.isError) {
+										addToast(true, "Error", response.msg);
+								} else {
+								
+								}
+						} catch (err) {
+								addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+						}
+				})
+				.fail(function (jqXHR, textStatus, errorThrown) {
+						addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+				});
+		})
+		
+		function addArticle() {
+				window.id = null;
+				window.createdDate = null;
+				window.action = "add";
+				$("#title").val("");
+				$("#image").attr("src", "");
+				$("#coverImage").val("");
+				editor.data("kendoEditor").value("");
+				$("#modalBtn").click();
+				$("#coverImage").prop('required',true);
+		}
+		
+		function editArticle(id) {
+				window.id = id.split("_")[1];
+				window.action = "edit";
+				$.ajax({
+						url: globalURL + "article/getArticle/" + window.id,
+						type: 'GET',
+						dataType: "json"
+				}).done(function (response) {
+						try {
+								if (response.isError) {
+										addToast(true, "Error", response.msg);
+										$("#submit_btn").prop('disabled', false);
+								} else {
+										window.id = response.data.id;
+										window.createdDate = response.data.createdDate;
+										$("#title").val(response.data.title);
+										$("#image").attr("src", globalURL + response.data.coverImage);
+										editor.data("kendoEditor").value(atob(response.data.content));
+										$("#modalBtn").click();
+										$("#coverImage").prop('required',false);
+										// $("#exampleModal").modal('hide');
+										// location.reload();
+								}
+						} catch (err) {
+								$("#submit_btn").prop('disabled', false);
+								addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+						}
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+						$("#submit_btn").prop('disabled', false);
+						addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+				});
+		}
+		
+		function deleteArticle(id) {
+				if (confirm("Are your sure you want to delete this?") == true) {
+						id = id.split("_")[1];
+						$.ajax({
+								url: globalURL + "article/deleteArticle/" + id,
+								type: 'GET',
+								dataType: "json"
+						}).done(function (response) {
+								try {
+										if (response.isError) {
+												addToast(true, "Error", response.msg);
+										} else {
+												location.reload();
+										}
+								} catch (err) {
+										addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+								}
+						}).fail(function (jqXHR, textStatus, errorThrown) {
+								addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+						});
+				}
+		}
+		
+		function loadImagePreview()
+		{
+				// Get the file input element
+				const fileInput = document.querySelector('#coverImage');
+				// Get the image element
+				const imagePreview = document.querySelector('#image');
+				
+				// Listen for the 'change' event on the file input element
+				fileInput.addEventListener('change', (event) => {
+						// Get the selected file
+						const file = event.target.files[0];
+						
+						// Create a new FileReader object
+						const reader = new FileReader();
+						
+						// Listen for the 'load' event on the reader object
+						reader.addEventListener('load', () => {
+								// Set the 'src' attribute of the image element to the data URL of the selected file
+								imagePreview.src = reader.result;
+						});
+						
+						// Read the contents of the selected file as a data URL
+						reader.readAsDataURL(file);
+				});
+		}
+</script>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+		<head>
+				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<title> Medinteract</title>
+				
+				<link rel="stylesheet" type="text/css" href="static/style.css">
+				<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+							integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+								integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+								crossorigin="anonymous"></script>
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+				<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+								integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+				<script type="text/javascript" src="static/script.js"></script>
+				<script type="text/javascript" src="static/appointments/appointments.js"></script>
+				<script type="text/javascript" src="static/appointments/mobiscroll.jquery.min.js"></script>
+				<link rel="stylesheet" href="static/appointments/appointments.css">
+				<link rel="stylesheet" href="static/appointments/mobiscroll.jquery.min.css">
+		</head>
+		<body>
+				<div id="navDiv"></div>
+				<div id="contentDiv">
+						<div mbsc-page class="demo-switching-calendar-scheduler-agenda">
+								<div style="height:100%">
+										<div id="demo-day-week-view" class="md-switching-view-cont"></div>
+								</div>
+								<div style="display:none">
+										<div id="demo-add-popup">
+												<div class="mbsc-form-group">
+														<label>
+																Title
+																<input mbsc-input id="event-title" style="z-index: 100;">
+														</label>
+														<label>
+																Description
+																<textarea mbsc-textarea id="event-desc" style="z-index: 100;"></textarea>
+														</label>
+												</div>
+												<div class="mbsc-form-group">
+														<label>
+																Starts
+																<input mbsc-input id="start-input" />
+														</label>
+														<label>
+																Ends
+																<input mbsc-input id="end-input" />
+														</label>
+														<div id="event-date"></div>
+														<div id="event-color-picker" class="event-color-c">
+																<div class="event-color-label">Color</div>
+																<div id="event-color-cont">
+																		<div id="event-color" class="event-color"></div>
+																</div>
+														</div>
+														<div class="mbsc-button-group">
+																<button class="mbsc-button-block" id="event-delete" mbsc-button data-color="danger" data-variant="outline">Delete event</button>
+														</div>
+												</div>
+										</div>
+										
+										<div id="demo-event-color">
+												<div class="crud-color-row">
+														<div class="crud-color-c" data-value="#ffeb3c">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check" style="background:#ffeb3c"></div>
+														</div>
+														<div class="crud-color-c" data-value="#ff9900">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check" style="background:#ff9900"></div>
+														</div>
+														<div class="crud-color-c" data-value="#f44437">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check" style="background:#f44437"></div>
+														</div>
+														<div class="crud-color-c" data-value="#ea1e63">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check" style="background:#ea1e63"></div>
+														</div>
+														<div class="crud-color-c" data-value="#9c26b0">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check" style="background:#9c26b0"></div>
+														</div>
+												</div>
+												<div class="crud-color-row">
+														<div class="crud-color-c" data-value="#3f51b5">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check" style="background:#3f51b5"></div>
+														</div>
+														<div class="crud-color-c" data-value="">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check"></div>
+														</div>
+														<div class="crud-color-c" data-value="#009788">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check" style="background:#009788"></div>
+														</div>
+														<div class="crud-color-c" data-value="#4baf4f">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check" style="background:#4baf4f"></div>
+														</div>
+														<div class="crud-color-c" data-value="#7e5d4e">
+																<div class="crud-color mbsc-icon mbsc-font-icon mbsc-icon-material-check" style="background:#7e5d4e"></div>
+														</div>
+												</div>
+										</div>
+								</div>
+						</div>
+				</div>
+		</body>
+</html>
+
+<script>
+		$(document).ready(function () {
+				if(getCookie("type") == "patient") {
+					loadAppointments(getCookie("type").charAt(0).toUpperCase() + getCookie("type").slice(1), getCookie("id"), true);
+				} else if(getCookie("type") == "doctor") {
+						loadAppointments(getCookie("type").charAt(0).toUpperCase() + getCookie("type").slice(1), getCookie("id"), true);
+				}
+		})
+</script>

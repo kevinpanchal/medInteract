@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Medinteract</title>
+
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="static/script.js"></script>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2023.1.117/styles/kendo.default-ocean-blue.min.css"/>
+    <script src="https://kendo.cdn.telerik.com/2023.1.117/js/kendo.all.min.js"></script>
+    <script src="./static/login/provinceList.js"></script>
+</head>
+<body>
+<div id="navDiv"></div>
+<div id="contentDiv">
+    <form class="p-5" id="signUpForm" method="post">
+        <fieldset id="disabledFieldSet" disabled>
+            <h2 class="text-center mb-5"> User Details</h2>
+		        <div class="form-group row my-3">
+				        <!--                Reference taken from : https://mdbootstrap.com/docs/standard/extended/file-input-image/-->
+				        <div class="d-flex justify-content-center mb-4">
+						        <img id="image"
+						             class="rounded-circle" alt="example placeholder" style="width: 200px;" onError="this.onerror=null;this.src='./static/images/doctor/default.jpg';"/>
+				        </div>
+				        <div class="d-flex justify-content-center">
+						        <div class="btn btn-primary btn-rounded">
+								        <label class="form-label text-white m-1" for="profileImage">Choose file</label>
+								        <input type="file" class="form-control d-none" id="profileImage" name="profileImage"
+								               accept="image/png, image/jpeg"/>
+						        </div>
+				        </div>
+		        </div>
+		        <div class="form-group row my-3">
+                <label class="col-12 col-form-label col-xl-3" for="name"> Name :</label>
+                <div class="col-12 col-xl-9">
+                    <input type="text" class="form-control" placeholder="Enter Name" id="name" name="name" required>
+                </div>
+            </div>
+            <div class="form-group row my-3">
+                <label class="col-12 col-form-label col-xl-3" for="email"> Email :</label>
+                <div class="col-12 col-xl-9">
+                    <input type="text" class="form-control" placeholder="Enter User Email" id="email" name="email"
+                           required disabled>
+                </div>
+            </div>
+            <div class="form-group row my-3">
+                <label class="col-12 col-form-label col-xl-3" for="mobileNumber"> Mobile No :</label>
+                <div class="col-12 col-xl-9">
+                    <input type="number" class="form-control" placeholder="Enter mobile number" id="mobileNumber"
+                           name="mobileNumber" required>
+                </div>
+            </div>
+            <div class="form-group my-3 row">
+                <label class="col-12 col-xl-3"> Gender : </label>
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="genderM" value="M">
+                        <label class="form-check-label" for="genderM">
+                            Male
+                        </label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="genderF" value="F">
+                        <label class="form-check-label" for="genderF">
+                            Female
+                        </label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="genderN" value="N">
+                        <label class="form-check-label" for="genderN">
+                            Prefer Not To Say
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row my-3">
+                <label class="col-12 col-form-label col-md-4 col-lg-3" for="DOB"> DOB :</label>
+                <div class="col-12 col-md-7 col-lg-6">
+                    <input type="text" class="form-control" placeholder="Enter DOB" id="DOB" name="DOB" required>
+                </div>
+            </div>
+            <div class="form-group row my-3">
+                <label class="col-12 col-sm-3 col-form-label col-xl-3" for="province"> Province :</label>
+                <div class="col-12 col-sm-9 col-xl-3">
+                    <select class="form-select" aria-label="Select province" name="province" id="province"
+                            onchange="selectProvince(this.value)" required>
+                        <option value="" selected disabled>Select Province</option>
+                    </select>
+                </div>
+                <label class="col-12 col-sm-3 col-form-label col-xl-2 mt-3 mt-xl-0" for="city"> City :</label>
+                <div class="col-12 col-sm-9 col-xl-4 mt-0 mt-sm-3 mt-xl-0">
+                    <select class="form-select" aria-label="Select city" name="city" id="city" required>
+                        <option value="" selected disabled>Select city</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row my-3">
+                <label class="col-12 col-form-label col-xl-3" for="street"> Street Lane :</label>
+                <div class="col-12 col-xl-9">
+                    <input type="text" class="form-control" placeholder="Enter street" id="street" name="street"
+                           required>
+                </div>
+            </div>
+            <div class="form-group row my-3">
+                <label class="col-12 col-form-label col-xl-3" for="postalCode"> Postal Code :</label>
+                <div class="col-12 col-xl-9">
+                    <input type="text" class="form-control" placeholder="Enter Postal Code" id="postalCode"
+                           name="postalCode" required>
+                </div>
+            </div>
+
+            <div class="doctorDetailsClass d-none">
+                <div class="form-group row my-3">
+                    <label class="col-12 col-form-label col-xl-3" for="qualification"> Qualification :</label>
+                    <div class="col-12 col-xl-9">
+                        <input type="text" class="form-control" placeholder="Enter your qualifications"
+                               id="qualification" name="qualification">
+                    </div>
+                </div>
+                <div class="form-group row my-3">
+                    <label class="col-12 col-form-label col-xl-3" for="field"> Expertise :</label>
+                    <div class="col-12 col-xl-9">
+                        <input type="text" class="form-control" placeholder="Enter your field of Expertise" id="field"
+                               name="field">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="text-center row">
+            <div id="cancelDiv" class="col d-none">
+                <button id="cancelBtn" class="btn btn-primary">Cancel</button>
+            </div>
+            <div class="col">
+                <button id="btn" class="btn btn-primary">Update Profile</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
+<script>
+    window.disabled = true;
+    window.id = "";
+    window.email = "";
+    window.name = "";
+    window.addressProvince = "";
+    window.addressPostalCode = "";
+    window.addressCity = "";
+    window.addressStreet = "";
+    window.gender = "";
+    window.dob = "";
+    window.mobileNumber = "";
+    window.doctorType = "";
+    window.doctorQualification = "";
+    window.active = true;
+    window.blocked = false;
+
+    $("#btn").click(function (event) {
+        event.preventDefault();
+        if (window.disabled) {
+            $("#btn").html("Save Changes");
+            $("#cancelDiv").removeClass("d-none");
+            $("#DOB").kendoDatePicker({value: window.dob}).data("kendoDatePicker").enable(true);
+            window.disabled = false;
+            $("#disabledFieldSet").removeAttr("disabled");
+        } else {
+		        //--------------------HANDLE IMAGE---------------------\\
+		
+		        const fileInput = document.querySelector('input[type="file"]');
+		        let file = fileInput.files[0]; // get the first file from the input
+		        const formData = new FormData();
+		        formData.append('profileImage', file); // add the file to the form data
+		        
+		        //--------------------HANDLE DATA---------------------\\
+		        
+            let data = {};
+            let type = getCookie("type");
+            data["id"] = window.id;
+            data[type + "Email"] = $("#email").val();
+            data[type + "Name"] = $("#name").val();
+            data[type + "AddressProvince"] = $("#province").val();
+            data[type + "AddressCity"] = $("#city").val();
+            data[type + "AddressPostalCode"] = $("#postalCode").val();
+            data[type + "AddressStreet"] = $("#street").val();
+            data[type + "Gender"] = $('input[name="gender"]:checked').val();
+            data[type + "DOB"] = new Date($("#DOB").val());
+            data[type + "MobileNumber"] = $("#mobileNumber").val();
+            if (type == "doctor") {
+                data[type + "Type"] = $("#field").val();
+                data[type + "Qualification"] = $("#qualification").val();
+            }
+		        formData.append("objectData", JSON.stringify(data));
+            $.ajax({
+                type: "POST",
+                url: globalURL + type + "/updateProfile",
+		            data: formData,
+		            processData: false,
+		            contentType: false,
+            }).done(function (data) {
+                if (data.isError) {
+                    addToast(true, "Error", data.msg);
+                } else {
+                    addToast(false, "Hurray", data.msg);
+                    setCookie("id", data.data.id);
+		                setCookie("profilePicture", data.data.profilePicture);
+		                if (type == 'patient') {
+                        setCookie("name", data.data.patientName);
+                        setCookie("email", data.data.patientEmail);
+                        setCookie("city", data.data.patientAddressCity);
+                        setCookie("province", data.data.patientAddressProvince);
+                        setCookie("type", "patient");
+                    } else {
+                        setCookie("name", data.data.doctorName);
+                        setCookie("email", data.data.doctorEmail);
+                        setCookie("city", data.data.doctorAddressCity);
+                        setCookie("province", data.data.doctorAddressProvince);
+                        setCookie("type", "doctor");
+                    }
+                    window.id = data["data"]["id"];
+                    window.email = data["data"][type + "Email"];
+                    window.mobileNumber = data["data"][type + "MobileNumber"];
+                    window.name = data["data"][type + "Name"];
+                    window.addressProvince = data["data"][type + "AddressProvince"].toString();
+                    window.addressPostalCode = data["data"][type + "AddressPostalCode"];
+                    window.addressCity = data["data"][type + "AddressCity"];
+                    window.addressStreet = data["data"][type + "AddressStreet"];
+                    window.gender = data["data"][type + "Gender"];
+                    window.dob = new Date(data["data"][type + "DOB"]);
+										window.profilePicture = globalURL+data["data"]["profilePicture"];
+                    if (type === "doctor") {
+                        window.doctorType = data["data"][type + "Type"];
+                        window.doctorQualification = data["data"][type + "Qualification"];
+                    }
+		                $("#profileImage").val('');
+                }
+                window.disabled = true;
+                $("#btn").html("Update Profile");
+                $("#cancelDiv").addClass("d-none");
+                $("#disabledFieldSet").attr("disabled", true);
+
+            })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+                });
+        }
+    })
+
+    $("#cancelBtn").click(function (event) {
+        event.preventDefault();
+        $("#mobileNumber").val(window.mobileNumber);
+        $("#name").val(window.name);
+        $("#province").val(window.addressProvince);
+        selectProvince(window.addressProvince.toString());
+        $("#postalCode").val(window.addressPostalCode);
+        $("#city").val(window.addressCity);
+        $("#street").val(window.addressStreet);
+        $('#gender' + window.gender).prop('checked', true);
+        $("#DOB").kendoDatePicker({value: window.dob});
+        let type = getCookie("type");
+        if (type === "doctor") {
+            $("#field").val(window.doctorType);
+            $("#qualification").val(window.doctorQualification);
+        }
+				$("#image").attr("src", window.profilePicture);
+		    $("#profileImage").val('');
+        window.disabled = true;
+        $("#btn").html("Update Profile");
+        $("#cancelDiv").addClass("d-none");
+        $("#disabledFieldSet").attr("disabled", true);
+    })
+
+    $(document).ready(function () {
+		    loadImagePreview();
+				
+        for (let [key, value] of provinceList) {
+            $('#province').append(`<option value=${key}>${value["abbrv"]}</option>`);
+        }
+
+        if (getCookie("type") === "doctor") {
+            $(".doctorDetailsClass").removeClass("d-none");
+        }
+        const type = getCookie("type");
+
+        $.ajax({
+            url: globalURL + type + "/profile/" + getCookie("id"),
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json",
+        })
+            .done(function (response) {
+                try {
+                    if (response.isError) {
+                        addToast(true, "Error", response.msg);
+                    } else {
+                        window.id = response["data"]["id"];
+                        window.email = response["data"][type + "Email"];
+                        window.mobileNumber = response["data"][type + "MobileNumber"];
+                        window.name = response["data"][type + "Name"];
+                        window.addressProvince = response["data"][type + "AddressProvince"].toString();
+                        window.addressPostalCode = response["data"][type + "AddressPostalCode"];
+                        window.addressCity = response["data"][type + "AddressCity"];
+                        window.addressStreet = response["data"][type + "AddressStreet"];
+                        window.gender = response["data"][type + "Gender"];
+                        window.dob = new Date(response["data"][type + "DOB"]);
+		                    window.profilePicture = globalURL+response["data"]["profilePicture"];
+		                    $("#email").val(window.email);
+                        $("#mobileNumber").val(window.mobileNumber);
+                        $("#name").val(window.name);
+                        $("#province").val(window.addressProvince);
+                        selectProvince(window.addressProvince);
+                        $("#postalCode").val(window.addressPostalCode);
+                        $("#city").val(window.addressCity);
+                        $("#street").val(window.addressStreet);
+                        $('#gender' + window.gender).prop('checked', true);
+                        $("#DOB").kendoDatePicker({value: window.dob});
+                        if (type === "doctor") {
+                            window.doctorType = response["data"][type + "Type"];
+                            window.doctorQualification = response["data"][type + "Qualification"];
+                            $("#field").val(window.doctorType);
+                            $("#qualification").val(window.doctorQualification);
+                        }
+		                    $("#image").attr("src", window.profilePicture);
+                    }
+                } catch (err) {
+                    addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+                }
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+            });
+    })
+
+    function selectProvince(province) {
+        let citySel = document.getElementById("city");
+        citySel.length = 1;
+        let cities = provinceList.get(province)["data"];
+        for (let i = 0; i < cities.length; i++) {
+            $('#city').append(`<option value="${cities[i]['id']}">${cities[i]['city']}</option>`);
+        }
+    }
+
+    function loadImagePreview()
+    {
+		    // Get the file input element
+		    const fileInput = document.querySelector('#profileImage');
+				// Get the image element
+		    const imagePreview = document.querySelector('#image');
+
+				// Listen for the 'change' event on the file input element
+		    fileInput.addEventListener('change', (event) => {
+				    // Get the selected file
+				    const file = event.target.files[0];
+				
+				    // Create a new FileReader object
+				    const reader = new FileReader();
+				
+				    // Listen for the 'load' event on the reader object
+				    reader.addEventListener('load', () => {
+						    // Set the 'src' attribute of the image element to the data URL of the selected file
+						    imagePreview.src = reader.result;
+				    });
+				
+				    // Read the contents of the selected file as a data URL
+				    reader.readAsDataURL(file);
+		    });
+    }
+</script>

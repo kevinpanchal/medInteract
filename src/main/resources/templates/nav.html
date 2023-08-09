@@ -1,0 +1,62 @@
+<!--reference https://getbootstrap.com/docs/5.3/components/navbar/#how-it-works-->
+
+<nav class="navbar navbar-expand-lg my-4" style="background-color: #f9f9f9">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item navItem">
+                    <a class="nav-link" id="dashboard" aria-current="page" href="./dashboard.html">Home</a>
+                </li>
+                <li class="nav-item navItem">
+                    <a class="nav-link" id="appointments" href="./appointments.html">Appointments</a>
+                </li>
+                <li class="nav-item navItem">
+                    <a class="nav-link" id="p_prescription" href="./p_prescription.html">Prescription</a>
+                </li>
+		            <li class="nav-item navItem">
+				            <a class="nav-link" id="articles" href="./articles.html">Articles</a>
+		            </li>
+		            <li class="nav-item navItem">
+				            <a class="nav-link" id="chatbot" href="./chatbot.html">Chat-bot</a>
+		            </li>
+            </ul>
+            <ul class="navbar-nav mb-2 mb-lg-0 ms-auto me-2">
+                <li class="nav-item navItem dropdown fs-4 ms-lg-3 px-1">
+                    <a class="dropdown-item" id="notifications" href="./notifications.html"><i id="bell" class="bi bi-bell"></i></a>
+                </li>
+                <li class="nav-item navItem dropdown fs-4 ms-lg-3 px-1">
+                    <a class="dropdown-item" id="profile" href="./profile.html"><i id="person" class="bi bi-person"></i></a>
+                </li>
+                <li class="nav-item navItem dropdown fs-4 ms-lg-3 px-1">
+                    <div class="dropdown-item" onclick="logout()" style="cursor: pointer;"><i class="bi bi-box-arrow-right"></i></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="toastDiv" class="toast-container position-fixed top-0 end-0 p-3"></div>
+<script>
+		let fileName = location.href.split('/').pop().split(".")[0]
+		$(".nav-link").removeClass("active");
+		$("#" + fileName).addClass("active");
+		
+		if(fileName == "notifications") {
+				$("#bell").removeClass("bi-bell")
+				$("#bell").addClass("bi-bell-fill")
+		} else {
+				$("#bell").addClass("bi-bell")
+				$("#bell").remove("bi-bell-fill")
+		}
+		
+		if(fileName == "profile") {
+				$("#person").removeClass("bi-person")
+				$("#person").addClass("bi-person-fill")
+		} else {
+				$("#person").addClass("bi-person")
+				$("#person").remove("bi-person-fill")
+		}
+</script>

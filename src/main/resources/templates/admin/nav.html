@@ -1,0 +1,31 @@
+<!--reference https://getbootstrap.com/docs/5.3/components/navbar/#how-it-works-->
+
+<nav class="navbar navbar-expand-lg mt-4" style="background-color: #f9f9f9">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Doctors
+          </a>
+          <ul class="dropdown-menu">
+            <li><a id="pending" class="dropdown-item" href="#" onclick="showPendingDoctors()">Pending</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a id="approved" class="dropdown-item" href="#" onclick="showApprovedDoctors()">Approved</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a id="blocked" class="dropdown-item" href="#" onclick="showBlockedDoctors()">Blocked</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0 ms-auto me-2">
+        <li class="nav-item navItem dropdown fs-4 ms-lg-3 px-1">
+          <div class="dropdown-item" onclick="logout()"><i class="bi bi-box-arrow-right"></i></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div id="toastDiv" class="toast-container position-fixed top-0 end-0 p-3"></div>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width, initial-scale=1" name="viewport">
+		<title> Medinteract</title>
+		
+		<link href="static/style.css" rel="stylesheet" type="text/css">
+		<link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+		      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" rel="stylesheet">
+		<script crossorigin="anonymous"
+		        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+		        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+		<script crossorigin="anonymous"
+		        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+		        src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+		<script crossorigin="anonymous"
+		        integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw=="
+		        referrerpolicy="no-referrer"
+		        src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+		<script crossorigin="anonymous"
+		        integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g=="
+		        referrerpolicy="no-referrer"
+		        src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+		<link href="https://kendo.cdn.telerik.com/2023.1.117/styles/kendo.default-ocean-blue.min.css" rel="stylesheet"/>
+		<script src="https://kendo.cdn.telerik.com/2023.1.117/js/kendo.all.min.js"></script>
+		<script src="static/script.js" type="text/javascript"></script>
+		<style>
+				#blogContainer .card {
+						-webkit-transition: all 100ms ease-in-out;
+						transition: all 100ms ease-in-out;
+				}
+				
+				#blogContainer .card:hover {
+						transform: scale(1.04);
+						-webkit-box-shadow: 0 10px 70px rgba(0,0,0,.05);
+						box-shadow: 0 10px 70px rgba(0,0,0,.05);
+				}
+		</style>
+</head>
+<body>
+<div id="navDiv"></div>
+<div id="contentDiv">
+		<div class="row m-0 py-4" id="blogContainer">
+		</div>
+</div>
+</body>
+</html>
+
+<script>
+		$(document).ready(function () {
+				if(getCookie("type") === "doctor") {
+						window.location.href = './d_articles.html'
+				}
+				domainURL = "article/fetchAllArticles";
+				$.ajax({
+						url: globalURL + domainURL,
+						type: "GET",
+						dataType: "json"
+				})
+				.done(function (response) {
+						for (i = 0; i < response.data.length; i++) {
+								$("#blogContainer").append(`
+						<div class="col-12 col-sm-6 col-md-4 col-lg-3 py-3">
+								<div class="card p-4 h-100">
+										<img src="${globalURL}${response.data[i].coverImage}" class="card-img-top" alt="..." style="height:100%">
+												<div class="card-body d-flex flex-column">
+														<div class="mt-auto">
+																<h5 class="card-title">${response.data[i].title}</h5>
+														<div class="row">
+																<img class="rounded-circle mx-auto" src="${globalURL}${response.data[i].profilePicture}"
+																     onError="this.onerror=null;this.src='./static/images/doctor/default.jpg';"
+																     style="width: 3rem;">
+																		<div class="align-items-end d-flex col ps-0 fw-bold">
+																				${response.data[i].doctorName}
+																		</div>
+														</div>
+														<!-- <p class="pt-2">${new Date(new Date(response.data[i].createdDate).getTime() + new Date(response.data[i].createdDate).getTimezoneOffset()*60*1000*-1).toJSON()}</p> -->
+														<p class="pt-2">${new Date(response.data[i].createdDate).toLocaleString()}</p>
+														<!--								<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+														<div class="d-xxl-flex flex-row">
+																<a href="./article.html#${response.data[i].id}" class="btn btn-primary">Read More</a>
+														</div>
+														
+													</div>
+												</div>
+								</div>
+						</div>
+				`)
+						}
+						try {
+								if (response.isError) {
+										addToast(true, "Error", response.msg);
+								} else {
+								
+								}
+						} catch (err) {
+								addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+						}
+				})
+				.fail(function (jqXHR, textStatus, errorThrown) {
+						addToast(true, "Error", "Some unknown error occurred. Pls try again later!")
+				});
+		})
+</script>
